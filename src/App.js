@@ -8,6 +8,69 @@ const EMPRESA = {
   inicial: "A",
 };
 
+const USUARIOS = [
+  { email: "admin@atendepro.com", senha: "admin123", nome: "Administrador", cargo: "Admin" },
+  { email: "atendente@atendepro.com", senha: "123456", nome: "Atendente", cargo: "Atendente" },
+];
+
+function TelaLogin({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  function handleLogin() {
+    setErro("");
+    if (!email.trim()) { setErro("Digite seu e-mail."); return; }
+    if (!senha.trim()) { setErro("Digite sua senha."); return; }
+    setCarregando(true);
+    setTimeout(() => {
+      const user = USUARIOS.find(u => u.email === email && u.senha === senha);
+      if (user) { onLogin(user); }
+      else { setErro("E-mail ou senha incorretos."); setCarregando(false); }
+    }, 1000);
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: `linear-gradient(135deg, ${EMPRESA.cor}, #7c3aed)` }}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-3xl mb-4 shadow-lg" style={{ background: EMPRESA.cor }}>{EMPRESA.inicial}</div>
+          <h1 className="text-2xl font-bold text-gray-800">{EMPRESA.nome}</h1>
+          <p className="text-sm text-gray-400">{EMPRESA.slogan}</p>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1">E-mail</label>
+            <input value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200"
+              placeholder="seu@email.com" type="email" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1">Senha</label>
+            <div className="relative">
+              <input value={senha} onChange={e => setSenha(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                placeholder="••••••••" type={mostrarSenha ? "text" : "password"} />
+              <button onClick={() => setMostrarSenha(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{mostrarSenha ? "🙈" : "👁️"}</button>
+            </div>
+          </div>
+          {erro && <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-2 rounded-xl">{erro}</div>}
+          <button onClick={handleLogin} disabled={carregando} className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-all disabled:opacity-60" style={{ background: EMPRESA.cor }}>
+            {carregando ? "⏳ Entrando..." : "Entrar →"}
+          </button>
+        </div>
+        <div className="mt-6 p-3 bg-gray-50 rounded-xl">
+          <p className="text-xs text-gray-400 font-semibold mb-1">Acesso de teste:</p>
+          <p className="text-xs text-gray-500">📧 admin@atendepro.com</p>
+          <p className="text-xs text-gray-500">🔑 admin123</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const now = () => new Date();
 const fmtHora = d => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 const fmtData = d => new Date(d + "T00:00").toLocaleDateString("pt-BR");
@@ -66,7 +129,10 @@ export default function App() {
   const [showRespostas, setShowRespostas] = useState(false);
   const [notifs, setNotifs] = useState([]);
   const [mobile, setMobile] = useState(isMobile());
+  const [user, setUser] = useState(null);
   const msgEndRef = useRef(null);
+
+  if (!user) return <TelaLogin onLogin={setUser} />;
 
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
@@ -162,9 +228,9 @@ export default function App() {
         {!mobile && (
           <div className="p-4 border-t border-gray-100">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: EMPRESA.cor }}>A</div>
-              <div><p className="text-xs font-semibold text-gray-700">Atendente</p><p className="text-xs text-gray-400">Online</p></div>
-              <span className="ml-auto w-2 h-2 bg-green-400 rounded-full"></span>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: EMPRESA.cor }}>{user.nome[0]}</div>
+              <div><p className="text-xs font-semibold text-gray-700">{user.nome}</p><p className="text-xs text-gray-400">{user.cargo}</p></div>
+              <button onClick={() => setUser(null)} className="ml-auto text-xs text-red-400 hover:text-red-600" title="Sair">🚪</button>
             </div>
           </div>
         )}
