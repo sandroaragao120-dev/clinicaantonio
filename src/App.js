@@ -144,7 +144,6 @@ export default function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!user) return <TelaLogin onLogin={setUser} />;
 
   const total = tickets.length;
   const abertos = tickets.filter(t => t.status === "Aberto").length;
@@ -155,6 +154,7 @@ export default function App() {
   const filteredChats = chats.filter(c => searchChat === "" || c.nome.toLowerCase().includes(searchChat.toLowerCase()));
 
   useEffect(() => { msgEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatAtivo, chats]);
+  if (!user) return <TelaLogin onLogin={setUser} />;
 
   function addNotif(msg) {
     const key = Date.now().toString();
