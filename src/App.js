@@ -13,64 +13,6 @@ const USUARIOS = [
   { email: "atendente@atendepro.com", senha: "123456", nome: "Atendente", cargo: "Atendente" },
 ];
 
-function TelaLogin({ onLogin }) {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-  const [carregando, setCarregando] = useState(false);
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-
-  function handleLogin() {
-    setErro("");
-    if (!email.trim()) { setErro("Digite seu e-mail."); return; }
-    if (!senha.trim()) { setErro("Digite sua senha."); return; }
-    setCarregando(true);
-    setTimeout(() => {
-      const user = USUARIOS.find(u => u.email === email && u.senha === senha);
-      if (user) { onLogin(user); }
-      else { setErro("E-mail ou senha incorretos."); setCarregando(false); }
-    }, 1000);
-  }
-
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: `linear-gradient(135deg, ${EMPRESA.cor}, #7c3aed)` }}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8">
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-3xl mb-4 shadow-lg" style={{ background: EMPRESA.cor }}>{EMPRESA.inicial}</div>
-          <h1 className="text-2xl font-bold text-gray-800">{EMPRESA.nome}</h1>
-          <p className="text-sm text-gray-400">{EMPRESA.slogan}</p>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1">E-mail</label>
-            <input value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200"
-              placeholder="seu@email.com" type="email" />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1">Senha</label>
-            <div className="relative">
-              <input value={senha} onChange={e => setSenha(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200 pr-10"
-                placeholder="••••••••" type={mostrarSenha ? "text" : "password"} />
-              <button onClick={() => setMostrarSenha(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{mostrarSenha ? "🙈" : "👁️"}</button>
-            </div>
-          </div>
-          {erro && <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-2 rounded-xl">{erro}</div>}
-          <button onClick={handleLogin} disabled={carregando} className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-all disabled:opacity-60" style={{ background: EMPRESA.cor }}>
-            {carregando ? "⏳ Entrando..." : "Entrar →"}
-          </button>
-        </div>
-        <div className="mt-6 p-3 bg-gray-50 rounded-xl">
-          <p className="text-xs text-gray-400 font-semibold mb-1">Acesso de teste:</p>
-          <p className="text-xs text-gray-500">📧 admin@atendepro.com</p>
-          <p className="text-xs text-gray-500">🔑 admin123</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const now = () => new Date();
 const fmtHora = d => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 const fmtData = d => new Date(d + "T00:00").toLocaleDateString("pt-BR");
@@ -114,6 +56,70 @@ function SLABadge({ ticket }) {
   );
 }
 
+function TelaLogin({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  function handleLogin() {
+    setErro("");
+    if (!email.trim()) { setErro("Digite seu e-mail."); return; }
+    if (!senha.trim()) { setErro("Digite sua senha."); return; }
+    setCarregando(true);
+    const emailDigitado = email.trim().toLowerCase();
+    const senhaDigitada = senha.trim();
+    const user = USUARIOS.find(u => u.email.toLowerCase() === emailDigitado && u.senha === senhaDigitada);
+    setTimeout(() => {
+      if (user) {
+        onLogin(user);
+      } else {
+        setErro("E-mail ou senha incorretos.");
+        setCarregando(false);
+      }
+    }, 1000);
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: `linear-gradient(135deg, ${EMPRESA.cor}, #7c3aed)` }}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-3xl mb-4 shadow-lg" style={{ background: EMPRESA.cor }}>{EMPRESA.inicial}</div>
+          <h1 className="text-2xl font-bold text-gray-800">{EMPRESA.nome}</h1>
+          <p className="text-sm text-gray-400">{EMPRESA.slogan}</p>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1">E-mail</label>
+            <input value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200"
+              placeholder="seu@email.com" type="email" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1">Senha</label>
+            <div className="relative">
+              <input value={senha} onChange={e => setSenha(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                placeholder="••••••••" type={mostrarSenha ? "text" : "password"} />
+              <button onClick={() => setMostrarSenha(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{mostrarSenha ? "🙈" : "👁️"}</button>
+            </div>
+          </div>
+          {erro && <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-2 rounded-xl">{erro}</div>}
+          <button onClick={handleLogin} disabled={carregando} className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-all disabled:opacity-60" style={{ background: EMPRESA.cor }}>
+            {carregando ? "⏳ Entrando..." : "Entrar →"}
+          </button>
+        </div>
+        <div className="mt-6 p-3 bg-gray-50 rounded-xl">
+          <p className="text-xs text-gray-400 font-semibold mb-1">Acesso de teste:</p>
+          <p className="text-xs text-gray-500">📧 admin@atendepro.com</p>
+          <p className="text-xs text-gray-500">🔑 admin123</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [tickets, setTickets] = useState(initialTickets);
   const [chats, setChats] = useState(initialChats);
@@ -132,13 +138,13 @@ export default function App() {
   const [user, setUser] = useState(null);
   const msgEndRef = useRef(null);
 
-  if (!user) return <TelaLogin onLogin={setUser} />;
-
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (!user) return <TelaLogin onLogin={setUser} />;
 
   const total = tickets.length;
   const abertos = tickets.filter(t => t.status === "Aberto").length;
@@ -248,6 +254,7 @@ export default function App() {
           </div>
           <div className="flex gap-2 items-center">
             {notifs.map(n => <div key={n.key} className="text-xs px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hidden md:block">{n.msg}</div>)}
+            {mobile && <button onClick={() => setUser(null)} className="text-xs text-red-400 px-3 py-1.5 rounded-full border border-red-200">🚪 Sair</button>}
           </div>
         </header>
 
@@ -263,7 +270,7 @@ export default function App() {
                 ))}
               </div>
               <div className="rounded-xl p-4 flex items-center justify-between text-white mb-4" style={{ background: `linear-gradient(135deg, ${EMPRESA.cor}, #7c3aed)` }}>
-                <div><p className="font-bold text-sm mb-1">🚀 {EMPRESA.nome}</p><p className="text-xs opacity-80">Sistema de Atendimento Profissional</p></div>
+                <div><p className="font-bold text-sm mb-1">👋 Bem-vindo, {user.nome}!</p><p className="text-xs opacity-80">{EMPRESA.nome} — Sistema de Atendimento</p></div>
               </div>
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
                 <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
