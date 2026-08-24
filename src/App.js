@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 
 const EMPRESA = {
-  nome: "AtendePro",
-  slogan: "Gestão de Atendimento",
-  cor: "#ea580c",
-  corClara: "#7c3aed",
-  inicial: "A",
+  nome: "Clínica Antônio Carlos",
+  slogan: "Cuidando de você com atenção",
+  cor: "#16a34a",
+  corClara: "#dcfce7",
+  inicial: "C",
 };
 
 const USUARIOS = [
