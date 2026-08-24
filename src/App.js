@@ -217,9 +217,9 @@ export default function App() {
         {!mobile && (
           <div className="p-5" style={{ background: EMPRESA.cor }}>
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain rounded-lg" />
-              <div><p className="font-bold text-white text-sm">{EMPRESA.nome}</p><p className="text-xs text-blue-200">{EMPRESA.slogan}</p></div>
-            </div>
+               <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain rounded-lg" />
+               <div><p className="font-bold text-white text-sm">{EMPRESA.nome}</p><p className="text-xs text-blue-200">{EMPRESA.slogan}</p></div>
+             </div>
           </div>
         )}
         <nav className={mobile ? "flex flex-row overflow-x-auto p-2 gap-1" : "flex-1 p-3"}>
