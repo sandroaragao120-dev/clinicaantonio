@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from "react";
 const EMPRESA = {
   nome: "AtendePro",
   slogan: "Gestão de Atendimento",
-  cor: "#1E40AF",
-  corClara: "#DBEAFE",
+  cor: "#ea580c",
+  corClara: "#7c3aed",
   inicial: "A",
 };
 
