@@ -217,7 +217,7 @@ export default function App() {
         {!mobile && (
           <div className="p-5" style={{ background: EMPRESA.cor }}>
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center font-bold text-lg" style={{ color: EMPRESA.cor }}>{EMPRESA.inicial}</div>
+              <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain rounded-lg" />
               <div><p className="font-bold text-white text-sm">{EMPRESA.nome}</p><p className="text-xs text-blue-200">{EMPRESA.slogan}</p></div>
             </div>
           </div>
@@ -245,7 +245,7 @@ export default function App() {
       <main className="flex-1 flex flex-col overflow-auto">
         <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {mobile && <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: EMPRESA.cor }}>{EMPRESA.inicial}</div>}
+            {mobile && <img src="/logo.png" alt="Logo" className="w-7 h-7 object-contain rounded-lg" />}
             <h1 className="text-base font-bold text-gray-800">
               {page === "dashboard" && "Dashboard"}{page === "atendimentos" && "Atendimentos"}
               {page === "whatsapp" && "WhatsApp"}{page === "relatorio" && "Relatório"}
