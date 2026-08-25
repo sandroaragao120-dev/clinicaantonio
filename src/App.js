@@ -85,7 +85,7 @@ function TelaLogin({ onLogin }) {
     <div className="min-h-screen flex items-center justify-center p-4" style={{ background: `linear-gradient(135deg, ${EMPRESA.cor}, #7c3aed)` }}>
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-3xl mb-4 shadow-lg" style={{ background: EMPRESA.cor }}>{EMPRESA.inicial}</div>
+          <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain mb-4" />
           <h1 className="text-2xl font-bold text-gray-800">{EMPRESA.nome}</h1>
           <p className="text-sm text-gray-400">{EMPRESA.slogan}</p>
         </div>
